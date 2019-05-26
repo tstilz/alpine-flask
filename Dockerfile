@@ -2,7 +2,7 @@ FROM alpine
 MAINTAINER Christian Gatzlaff <cgatzlaff@gmail.com>
 
 # basic flask environment
-RUN apk add --no-cache bash git nginx uwsgi uwsgi-python3 \
+RUN apk add --no-cache bash git nginx uwsgi uwsgi-python3 nano \
 	&& pip3 install --upgrade pip \
 	&& pip3 install flask
 
@@ -14,12 +14,13 @@ RUN mkdir ${APP_DIR} \
 	&& chown -R nginx:nginx ${APP_DIR} \
 	&& chmod 777 /run/ -R \
 	&& chmod 777 /root/ -R
-VOLUME [${APP_DIR}]
+VOLUME ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 # expose web server port
 # only http, for ssl use reverse proxy
 EXPOSE 80
+EXPOSE 5000
 
 # copy config files into filesystem
 COPY nginx.conf /etc/nginx/nginx.conf
